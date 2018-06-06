@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Survey.Models.Survey>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SurveyTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SurveyUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeLimit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NoOfView)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NoOfResponses)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserEmailID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SurveyTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SurveyUrl)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeLimit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NoOfView)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NoOfResponses)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.UserEmailID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.SurveyID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.SurveyID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.SurveyID })
+        </td>
+    </tr>
+}
+
+</table>

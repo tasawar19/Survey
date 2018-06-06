@@ -1,0 +1,88 @@
+﻿@model Survey.Models.Survey
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Survey</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SurveyTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SurveyTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SurveyUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SurveyUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeLimit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeLimit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NoOfView)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NoOfView)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NoOfResponses)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NoOfResponses)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.UserEmailID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.UserEmailID)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

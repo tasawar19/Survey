@@ -1,0 +1,82 @@
+﻿@model Survey.Models.Survey
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Survey</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SurveyTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SurveyTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SurveyUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SurveyUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeLimit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeLimit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NoOfView)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NoOfView)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NoOfResponses)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NoOfResponses)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.UserEmailID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.UserEmailID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SurveyID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
