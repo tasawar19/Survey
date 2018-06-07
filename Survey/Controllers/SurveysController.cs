@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -33,7 +34,10 @@ namespace Survey.Controllers
         public ActionResult Create()
         {
             ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmailID");
-            return View();
+            Models.Survey survey = new Models.Survey();
+            survey.UserID = userID;
+            survey.EndDate = DateTime.Now;
+            return View(survey);
         }
 
         // POST: Surveys/Create
