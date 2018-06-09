@@ -27,56 +27,46 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.SurveyUrl)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SurveyUrl)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.TimeLimit)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.TimeLimit)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NoOfView)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NoOfView)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NoOfResponses)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NoOfResponses)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User.UserEmailID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.UserEmailID)
-        </dd>
-
     </dl>
+    @if (Model.SurveyID != 0)
+    {
+        <div class="form-group">
+            @Html.Label("Questions", htmlAttributes: new { @class = "control-label col-md-2" })
+            <br />
+            <hr>
+            @foreach (var item in Model.Questions.OrderBy(t => t.QuestionIndex))
+            {
+                <div class="col-md-10">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @(item.QuestionIndex):
+                        </dt>
+                        <dd>
+                            @item.QuestionText
+                        </dd>
+                        @if (item.QuestionTypeID == 2)
+                        {
+                            foreach (var option in item.QuestionOptions)
+                            {
+                                <dd>
+                                    <input type="radio" disabled /> @option.QuestionOptionText
+                                </dd>
+                            }
+                        }
+                    </dl>
+                </div>
+            }
+        </div>
+    }
 </div>
-<p>
+<hr />
+<div>
     @Html.ActionLink("Edit", "Edit", new { id = Model.SurveyID }) |
     @Html.ActionLink("Back to List", "Index")
-</p>
+</div>

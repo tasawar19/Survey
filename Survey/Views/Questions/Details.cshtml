@@ -1,0 +1,58 @@
+﻿@model Survey.Models.Question
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Question</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionIndex)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionIndex)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OptionCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OptionCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionType.QuestionTypeValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionType.QuestionTypeValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Survey.SurveyTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Survey.SurveyTitle)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.QuestionID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -31,10 +31,18 @@ namespace Survey.Controllers
         }
 
         // GET: Surveys/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmailID");
-            Models.Survey survey = new Models.Survey();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Models.Survey survey = db.Surveys.Find(id);
+            if (survey == null)
+            {
+                survey = new Models.Survey();
+            }
             survey.UserID = userID;
             survey.EndDate = DateTime.Now;
             return View(survey);
@@ -49,7 +57,10 @@ namespace Survey.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Surveys.Add(survey);
+                if (survey.SurveyID == 0)
+                    db.Surveys.Add(survey);
+                else
+                    db.Entry(survey).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

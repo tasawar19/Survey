@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SurveyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SurveyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Question">
           <Key>
             <PropertyRef Name="QuestionID" />
@@ -23,13 +23,14 @@
           <Property Name="QuestionOptionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="QuestionID" Type="int" />
           <Property Name="QuestionOptionText" Type="nvarchar" MaxLength="1000" />
-          <Property Name="IsSurveyLogicText" Type="bit" />
+          <Property Name="IsSurveyLogicText" Type="bit" Nullable="false" />
+          <Property Name="SurveyLogicText" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="QuestionType">
           <Key>
             <PropertyRef Name="QuestionTypeID" />
           </Key>
-          <Property Name="QuestionTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestionTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="QuestionTypeValue" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="ResponseAnswer">
@@ -254,8 +255,7 @@
             <End Role="SurveyResponse" EntitySet="SurveyResponse" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SurveyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -281,9 +281,10 @@
           <Property Name="QuestionOptionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="QuestionID" Type="Int32" />
           <Property Name="QuestionOptionText" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="IsSurveyLogicText" Type="Boolean" />
+          <Property Name="IsSurveyLogicText" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Question" Relationship="Self.FK_QuestionOption_Question" FromRole="QuestionOption" ToRole="Question" />
           <NavigationProperty Name="ResponseAnswers" Relationship="Self.FK_ResponseAnswer_QuestionOption" FromRole="QuestionOption" ToRole="ResponseAnswer" />
+          <Property Name="SurveyLogicText" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="QuestionType">
           <Key>
@@ -547,6 +548,7 @@
           <EntitySetMapping Name="QuestionOptions">
             <EntityTypeMapping TypeName="SurveyModel.QuestionOption">
               <MappingFragment StoreEntitySet="QuestionOption">
+                <ScalarProperty Name="SurveyLogicText" ColumnName="SurveyLogicText" />
                 <ScalarProperty Name="QuestionOptionID" ColumnName="QuestionOptionID" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
                 <ScalarProperty Name="QuestionOptionText" ColumnName="QuestionOptionText" />

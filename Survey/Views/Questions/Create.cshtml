@@ -1,0 +1,116 @@
+﻿@model Survey.Models.Question
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Question</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.SurveyID)
+        @Html.HiddenFor(model => model.QuestionID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.QuestionText, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.QuestionText, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.QuestionText, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.QuestionIndex, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.QuestionIndex, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.QuestionIndex, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.QuestionTypeID, "QuestionTypeID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("QuestionTypeID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.QuestionTypeID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group optionCount">
+            @Html.LabelFor(model => model.OptionCount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OptionCount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OptionCount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group optionCount">
+            @Html.Label("Options", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" id="options">
+                @{var i = 0;}
+                @foreach (var item in Model.QuestionOptions)
+                {
+                    <input type="hidden" name="QuestionOptions[@i].QuestionOptionID" value="@item.QuestionOptionID" />
+                    <input type="hidden" name="QuestionOptions[@i].QuestionID" value="@Model.QuestionID" />
+                    <input type="text" required name="QuestionOptions[@i].QuestionOptionText" value="@item.QuestionOptionText" class="form-control text-box single-line" />
+                    <text>Survey Logic:    </text><input type="checkbox" class="SurveyLogic" name="QuestionOptions[@i].IsSurveyLogicText" value="@item.IsSurveyLogicText.ToString()" checked="@item.IsSurveyLogicText" />
+                    i++;
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+    <div>
+        @Html.ActionLink("Back to Survey", "Create", "Surveys", new { id = Model.SurveyID }, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            showHide();
+            $("#QuestionTypeID").change(function () {
+                showHide();
+            });
+
+            $("#OptionCount").change(function () {
+                $("#options").html('');
+                for (var i = 0; i < $("#OptionCount").val(); i++)
+                    $("#options").append('<input type="text" required placeholder="Enter option text" name="QuestionOptions[' + i + '].QuestionOptionText" value="" class="form-control text-box single-line valid" >'
+                        + '<text>Survey Logic:    </text><input type = "checkbox" class="SurveyLogic" name = "QuestionOptions[' + i + '].IsSurveyLogicText" value="False">'
+                        + '<input type="hidden" name="QuestionOptions[' + i + '].QuestionID" value="@Model.QuestionID">');
+            });
+            $(document).on('change', '.SurveyLogic', function () {
+                $(".SurveyLogic").not(this).attr("checked", false);
+                if ($(this).prop("checked")) {
+                    $(this).attr("checked", true);
+                    $(this).val(true);
+                } else {
+                    $(this).val(false);
+                }
+            });
+
+            function showHide() {
+                if ($("#QuestionTypeID").val() === "2") {
+                    $(".optionCount").show();
+                }
+                else {
+                    $(".optionCount").hide();
+                }
+            }
+        });
+    </script>
+}

@@ -7,21 +7,22 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Survey</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @*<div class="form-group">
-            @Html.LabelFor(model => model.UserID, "UserID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("UserID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.UserID, "UserID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("UserID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+        @Html.HiddenFor(model => model.SurveyID)
         @Html.HiddenFor(model => model.UserID)
         <div class="form-group">
             @Html.Label("Survey Title", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -46,15 +47,54 @@
                 @Html.ValidationMessageFor(model => model.TimeLimit, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="@(Model.SurveyID>0?"Update":"Create")" class="btn btn-default" />
             </div>
         </div>
+        @if (Model.SurveyID != 0)
+        {
+            <div class="form-group">
+                @Html.Label("Questions", htmlAttributes: new { @class = "control-label col-md-2" })
+                <br />
+                <hr>
+                @foreach (var item in Model.Questions.OrderBy(t => t.QuestionIndex))
+                {
+                    <div class="col-md-10">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @(item.QuestionIndex):
+                            </dt>
+                            <dd>
+                                @item.QuestionText
+                            </dd>
+                            @if (item.QuestionTypeID == 2)
+                            {
+                                foreach (var option in item.QuestionOptions)
+                                {
+                                    <dd>
+                                        <input type="radio" disabled /> @option.QuestionOptionText
+                                    </dd>
+                                }
+                            }
+                        </dl>
+                    </div>
+                    <div class="col-md-2">
+                        @Html.ActionLink("Edit", "Create", "Questions", new { surveyID = Model.SurveyID, id = item.QuestionID }, new { htmlAttributes = new { @class = "form-control" } }) |
+                        @Html.ActionLink("Delete", "Delete", "Questions", new { id = item.QuestionID }, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                }
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @Html.ActionLink("Add Question", "Create", "Questions", new { surveyID = Model.SurveyID, id = 0 }, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        }
     </div>
 }
 
+<hr />
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

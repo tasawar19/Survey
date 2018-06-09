@@ -23,7 +23,8 @@ namespace Survey.Models
         public int QuestionOptionID { get; set; }
         public Nullable<int> QuestionID { get; set; }
         public string QuestionOptionText { get; set; }
-        public Nullable<bool> IsSurveyLogicText { get; set; }
+        public bool IsSurveyLogicText { get; set; }
+        public string SurveyLogicText { get; set; }
     
         public virtual Question Question { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
