@@ -69,39 +69,6 @@ namespace Survey.Controllers
             return View(survey);
         }
 
-        // GET: Surveys/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Models.Survey survey = db.Surveys.Find(id);
-            if (survey == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmailID", survey.UserID);
-            return View(survey);
-        }
-
-        // POST: Surveys/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Models.Survey survey)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(survey).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmailID", survey.UserID);
-            return View(survey);
-        }
-
         // GET: Surveys/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -122,10 +89,30 @@ namespace Survey.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Models.Survey survey = db.Surveys.Find(id);
+            Models.Survey survey = db.Surveys
+                .Where(p => p.SurveyID == id)
+                .Include(q => q.Questions).Include(q => q.Questions.Select(o => o.QuestionOptions))
+                .SingleOrDefault();
+            foreach(var item in survey.Questions.ToList())
+            {
+                db.Questions.Remove(item);
+            }
             db.Surveys.Remove(survey);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult SurveyList(string search="")
+        {
+            var surveys = db.Surveys.Where(t => t.SurveyTitle.Contains(search));
+            return View(surveys.ToList());
+        }
+
+        public ActionResult SurveyResponse(int responseID)
+        {
+            var response = db.SurveyResponses.Find(responseID);
+            Models.Survey survey = db.Surveys.Find(response.SurveyID);
+            return View(survey);
         }
 
         protected override void Dispose(bool disposing)

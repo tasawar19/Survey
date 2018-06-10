@@ -19,31 +19,31 @@
         @Html.HiddenFor(model => model.QuestionID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.QuestionText, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.QuestionText,"Question Text", htmlAttributes: new { @class = "control-label col-md-2 " })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.QuestionText, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.QuestionText, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
                 @Html.ValidationMessageFor(model => model.QuestionText, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.QuestionIndex, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.QuestionIndex, "Question Index", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.QuestionIndex, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.QuestionIndex, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
                 @Html.ValidationMessageFor(model => model.QuestionIndex, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.QuestionTypeID, "QuestionTypeID", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.QuestionTypeID, "Question Type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("QuestionTypeID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("QuestionTypeID", null, htmlAttributes: new { @class = "form-control", @required = "required" })
                 @Html.ValidationMessageFor(model => model.QuestionTypeID, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group optionCount">
-            @Html.LabelFor(model => model.OptionCount, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.OptionCount, "Option Count", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.OptionCount, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.OptionCount, "", new { @class = "text-danger" })
@@ -56,10 +56,18 @@
                 @{var i = 0;}
                 @foreach (var item in Model.QuestionOptions)
                 {
+                    <b>Option @(i+1):</b>
                     <input type="hidden" name="QuestionOptions[@i].QuestionOptionID" value="@item.QuestionOptionID" />
                     <input type="hidden" name="QuestionOptions[@i].QuestionID" value="@Model.QuestionID" />
                     <input type="text" required name="QuestionOptions[@i].QuestionOptionText" value="@item.QuestionOptionText" class="form-control text-box single-line" />
-                    <text>Survey Logic:    </text><input type="checkbox" class="SurveyLogic" name="QuestionOptions[@i].IsSurveyLogicText" value="@item.IsSurveyLogicText.ToString()" checked="@item.IsSurveyLogicText" />
+                    <div style="margin: 10px 0 10px 0;">
+                        <text>Survey Logic:    </text>
+                        <input type="checkbox" attr="@i" style="padding-top:10px;" class="SurveyLogic" name="QuestionOptions[@i].IsSurveyLogicText" value="@item.IsSurveyLogicText.ToString()" checked="@item.IsSurveyLogicText" />
+                        @if (item.IsSurveyLogicText)
+                        {
+                        <input type="text" name="QuestionOptions[@i].SurveyLogicText" value="@item.SurveyLogicText" class="LogicText form-control single-line" />
+                        }
+                    </div>
                     i++;
                 }
             </div>
@@ -73,31 +81,32 @@
     </div>
 }
 
-    <div>
-        @Html.ActionLink("Back to Survey", "Create", "Surveys", new { id = Model.SurveyID }, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
+<div>
+    @Html.ActionLink("Back to Survey", "Create", "Surveys", new { id = Model.SurveyID }, new { htmlAttributes = new { @class = "form-control" } })
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function () {
-            showHide();
+            if ($("#QuestionTypeID").val() == 1)
+                $(".optionCount").hide();
+            else
+                $(".optionCount").show();
             $("#QuestionTypeID").change(function () {
                 showHide();
             });
 
             $("#OptionCount").change(function () {
-                $("#options").html('');
-                for (var i = 0; i < $("#OptionCount").val(); i++)
-                    $("#options").append('<input type="text" required placeholder="Enter option text" name="QuestionOptions[' + i + '].QuestionOptionText" value="" class="form-control text-box single-line valid" >'
-                        + '<text>Survey Logic:    </text><input type = "checkbox" class="SurveyLogic" name = "QuestionOptions[' + i + '].IsSurveyLogicText" value="False">'
-                        + '<input type="hidden" name="QuestionOptions[' + i + '].QuestionID" value="@Model.QuestionID">');
+                optionChange();
             });
             $(document).on('change', '.SurveyLogic', function () {
                 $(".SurveyLogic").not(this).attr("checked", false);
+                $(".SurveyLogic").parent("div").find(".LogicText").remove();
                 if ($(this).prop("checked")) {
                     $(this).attr("checked", true);
                     $(this).val(true);
+                    $(this).parent("div").append('<input placeholder="Enter logic text" required type="text" name="QuestionOptions[' + $(this).attr('attr') + '].SurveyLogicText" class="LogicText form-control single-line" />');
                 } else {
                     $(this).val(false);
                 }
@@ -106,11 +115,30 @@
             function showHide() {
                 if ($("#QuestionTypeID").val() === "2") {
                     $(".optionCount").show();
+                    $("#OptionCount").val("0");
+                    optionChange();
+                }
+                else if ($("#QuestionTypeID").val() === "3") {
+                    $(".optionCount").show();
+                    $("#OptionCount").val("2").attr("disabled", true);
+                    optionChange();
                 }
                 else {
                     $(".optionCount").hide();
                 }
             }
+
+            function optionChange() {
+                 $("#options").html('');
+                for (var i = 0; i < $("#OptionCount").val(); i++)
+                    $("#options").append(
+                        '<b> Option ' + (i+1) + ':</b>'
+                        + '<input type="hidden" name="QuestionOptions[' + i + '].QuestionID" value="@Model.QuestionID">'
+                        + '<input type="text" required placeholder="Enter option text" name="QuestionOptions[' + i + '].QuestionOptionText" value="" class="form-control text-box single-line" >'
+                        + '<div style="margin: 10px 0 10px 0;">'
+                        + '<text>Survey Logic:    </text>'
+                        + '<input type="checkbox" attr="' + i + '" class="SurveyLogic" name = "QuestionOptions[' + i + '].IsSurveyLogicText" value="False">');
+            }
         });
-    </script>
+</script>
 }

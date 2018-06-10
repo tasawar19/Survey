@@ -1,23 +1,15 @@
 ﻿@model Survey.Models.Survey
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "View";
 }
 
 <h2>Details</h2>
 
-<div>
-    <h4>Survey</h4>
+<div class="form-horizontal" id="surveyDiv">
+    <h4>@Model.SurveyTitle</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.SurveyTitle)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SurveyTitle)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
@@ -50,12 +42,35 @@
                         <dd>
                             @item.QuestionText
                         </dd>
-                        @if (item.QuestionTypeID == 2)
+                        @if (item.QuestionTypeID == 1)
+                            {
+                                    <dd>
+                                        <textarea rows="4" cols="40"></textarea>
+                                    </dd>
+                            }
+
+                        @foreach (var option in item.QuestionOptions)
                         {
-                            foreach (var option in item.QuestionOptions)
+                            if (item.QuestionTypeID == 2)
                             {
                                 <dd>
                                     <input type="radio" disabled /> @option.QuestionOptionText
+                                </dd>
+                            }
+                            else if (item.QuestionTypeID == 3)
+                            {
+                                <dd>
+                                    <input type="checkbox" disabled /> @option.QuestionOptionText
+                                </dd>
+                            }
+                            if (option.IsSurveyLogicText)
+                            {
+                                <dd>
+                                    <b>Survey Logic: </b>
+                                    @option.SurveyLogicText
+                                </dd>
+                                <dd>
+                                    <textarea rows="4" cols="40"></textarea>
                                 </dd>
                             }
                         }
@@ -65,8 +80,40 @@
         </div>
     }
 </div>
-<hr />
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.SurveyID }) |
+<p>
+    <button id="embed">Embed</button>
+    <button id="pdf">Generate PDF</button>
+    <button id="word">Generate Word</button>
+    <br /><br />
     @Html.ActionLink("Back to List", "Index")
-</div>
+</p>
+
+
+@section Scripts {
+    <script src="~/Scripts/third_party/jspdf.debug.js"></script>
+    <script src="~/Scripts/third_party/html2pdf.js"></script>
+    <script src="~/Scripts/third_party/word.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#pdf').click(function () {
+                var pdf = new jsPDF('p', 'pt', 'letter');
+                var canvas = pdf.canvas;
+                canvas.height = 72 * 11;
+                canvas.width = 72 * 8.5;
+                // var width = 400;
+                var html = '<html><body style="margin-left: 20%;">' + $('#surveyDiv').html() + '</body></html>';
+
+                html2pdf(html, pdf, function (canvas) {
+                    pdf.save('Survey.pdf');
+                }
+                );
+            });
+            $('#word').click(function () {
+                $(document).googoose({
+                    area: '#surveyDiv'
+                });
+            });
+        });
+    </script>
+}

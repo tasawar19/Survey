@@ -10,10 +10,8 @@ using Survey.Models;
 
 namespace Survey.Controllers
 {
-    public class QuestionsController : Controller
+    public class QuestionsController : BaseController
     {
-        private SurveyEntities db = new SurveyEntities();
-
         // GET: Questions
         public ActionResult Index()
         {
@@ -124,40 +122,6 @@ namespace Survey.Controllers
 
             }
         }
-        // GET: Questions/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Question question = db.Questions.Find(id);
-            if (question == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.QuestionTypeID = new SelectList(db.QuestionTypes, "QuestionTypeID", "QuestionTypeValue", question.QuestionTypeID);
-            ViewBag.SurveyID = new SelectList(db.Surveys, "SurveyID", "SurveyTitle", question.SurveyID);
-            return View(question);
-        }
-
-        // POST: Questions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "QuestionID,SurveyID,QuestionText,QuestionIndex,QuestionTypeID,OptionCount")] Question question)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(question).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.QuestionTypeID = new SelectList(db.QuestionTypes, "QuestionTypeID", "QuestionTypeValue", question.QuestionTypeID);
-            ViewBag.SurveyID = new SelectList(db.Surveys, "SurveyID", "SurveyTitle", question.SurveyID);
-            return View(question);
-        }
 
         // GET: Questions/Delete/5
         public ActionResult Delete(int? id)
@@ -185,7 +149,7 @@ namespace Survey.Controllers
                 .SingleOrDefault();
             db.Questions.Remove(question);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Create", "Surveys", new { id = question.SurveyID });
         }
 
         protected override void Dispose(bool disposing)

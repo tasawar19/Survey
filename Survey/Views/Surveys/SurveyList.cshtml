@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Survey.Models.Survey>
+
+@{
+    ViewBag.Title = "SurveyList";
+}
+
+<h2>SurveyList</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SurveyTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeLimit)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SurveyTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeLimit)
+        </td>
+        <td>
+            @Html.ActionLink("Take Survey", "Create", "Visitors", new { surveyID = item.SurveyID }, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+    </tr>
+}
+
+</table>

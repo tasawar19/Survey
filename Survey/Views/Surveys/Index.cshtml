@@ -32,44 +32,40 @@
         <th>
             @Html.DisplayNameFor(model => model.Status)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.UserEmailID)
-        </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SurveyTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SurveyUrl)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeLimit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NoOfView)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NoOfResponses)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.UserEmailID)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Create", new { id=item.SurveyID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.SurveyID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.SurveyID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SurveyTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SurveyUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeLimit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoOfView)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoOfResponses)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Create", new { id = item.SurveyID }) |
+                @Html.ActionLink("View", "Details", new { id = item.SurveyID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.SurveyID })
+            </td>
+        </tr>
+    }
 
 </table>
+
