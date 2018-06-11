@@ -43,7 +43,10 @@
             <br />
             <hr>
             foreach (var item in Model.Questions.OrderBy(t => t.QuestionIndex))
-            {<div class="form-group">
+            {
+                <div class="form-group question">
+                    <input type="hidden" id="questionID" value="@item.QuestionID" />
+                    <input type="hidden" id="optionTypeID" value="@item.QuestionTypeID" />
                     <div class="col-md-1">
 
                         @(item.QuestionIndex):
@@ -57,7 +60,7 @@
                     <div class="form-group">
                         <div class="col-md-1"></div>
                         <div class="col-md-10">
-                            <textarea rows="4" cols="100"></textarea>
+                            <textarea id="text@(item.QuestionID)" rows="4" cols="100"></textarea>
                         </div>
                     </div>
                 }
@@ -68,7 +71,7 @@
                         <div class="form-group">
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
-                                <input type="radio" attr="@option.IsSurveyLogicText.ToString()" name="radio@(item.QuestionID)" /> @option.QuestionOptionText
+                                <input type="radio" attr="@option.IsSurveyLogicText.ToString()" value="@option.QuestionID" id="@option.QuestionOptionID" class="radioOption" name="radio@(option.QuestionID)" /> @option.QuestionOptionText
                             </div>
                         </div>
                     }
@@ -77,15 +80,24 @@
                         <div class="form-group">
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
-                                <input type="checkbox" attr="@option.IsSurveyLogicText.ToString()" name="checkbox@(item.QuestionID)"/> @option.QuestionOptionText
+                                <input type="checkbox" attr="@option.IsSurveyLogicText.ToString()" value="@option.QuestionID" id="@option.QuestionOptionID" class="checkboxOption" name="checkbox@(item.QuestionID)" /> @option.QuestionOptionText
                             </div>
                         </div>
                     }
                     if (option.IsSurveyLogicText)
-                    {<div class="form-group">
-                            <div class="col-md-10">
-                                Survey Logic: <input type="checkbox" disabled checked />
-                                @option.SurveyLogicText
+                    {
+                        <div id="surveyLogicDiv@(option.QuestionID)" style="display:none;">
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    @option.SurveyLogicText
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <textarea id="text@(item.QuestionID)" rows="4" cols="100"></textarea>
+                                </div>
                             </div>
                         </div>
                     }
@@ -93,7 +105,7 @@
             }
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    @Html.ActionLink("Add Question", "Create", "Questions", new { surveyID = Model.SurveyID, id = 0 }, new { htmlAttributes = new { @class = "form-control" } })
+                    <input type="button" value="Submit" id="submit" />
                 </div>
             </div>
         }
@@ -102,4 +114,67 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // radio button option
+            $('.radioOption').change(function () {
+                var checked = $(this).is(':checked')
+                if (checked) {
+                    if ($(this).attr('attr') == 'True') {
+                        $('#surveyLogicDiv' + $(this).val()).show();
+                    }
+                    else {
+                        $('#surveyLogicDiv' + $(this).val()).hide();
+                    }
+                }
+            });
+
+            // checkbox option
+            $('.checkboxOption').change(function () {
+                var checked = $(this).is(':checked')
+                $('input:checkbox[name=' + $(this).attr('name') + ']').prop('checked', false);
+                $(this).prop('checked', true);
+                if ($(this).attr('attr') == 'True') {
+                    $('#surveyLogicDiv' + $(this).val()).show();
+                }
+                else {
+                    $('#surveyLogicDiv' + $(this).val()).hide();
+                }
+            });
+
+            $('#submit').click(function () {
+                var arrayList = [];
+                $(".question").each(function () {
+                    var questionID = $(this).find("#questionID").val();
+                    var optionTypeID = $(this).find("#optionTypeID").val();
+                    var optionID = null;
+                    if (optionTypeID == 2) {
+                        var option = $('input:radio[name=radio' + questionID + ']:checked');
+                        optionID=option.attr('id');
+                    }
+                    else if (optionTypeID == 3) {
+                        var option = $('input:checkbox[name=checkbox' + questionID + ']:checked');
+                        optionID= option.attr('id');
+                    }
+
+                    var model = {
+                        SurveyResponseID: @ViewBag.ResponseID,
+                        QuestionID: questionID,
+                        QuestionOptionID: optionID,
+                        FreeTextAnswer: $('textarea#text' + questionID).val()
+                    };
+                    arrayList.push(model);
+                });
+                $.ajax({
+                    type: "POST",
+                    url: '/Surveys/SurveyResponse',
+                    data: arrayList,
+                    success: function (e) {
+                        window.location = '/Surveys/SurveyList';
+                    }
+                    //dataType: dataType
+                });
+            });
+        });
+    </script>
 }

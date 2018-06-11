@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Survey.Models;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -93,7 +95,7 @@ namespace Survey.Controllers
                 .Where(p => p.SurveyID == id)
                 .Include(q => q.Questions).Include(q => q.Questions.Select(o => o.QuestionOptions))
                 .SingleOrDefault();
-            foreach(var item in survey.Questions.ToList())
+            foreach (var item in survey.Questions.ToList())
             {
                 db.Questions.Remove(item);
             }
@@ -102,7 +104,7 @@ namespace Survey.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult SurveyList(string search="")
+        public ActionResult SurveyList(string search = "")
         {
             var surveys = db.Surveys.Where(t => t.SurveyTitle.Contains(search));
             return View(surveys.ToList());
@@ -110,9 +112,22 @@ namespace Survey.Controllers
 
         public ActionResult SurveyResponse(int responseID)
         {
-            var response = db.SurveyResponses.Find(responseID);
-            Models.Survey survey = db.Surveys.Find(response.SurveyID);
-            return View(survey);
+            var alreadyFilled = db.ResponseAnswers.Where(t => t.SurveyResponseID == responseID).Any();
+            if (!alreadyFilled)
+            {
+                ViewBag.ResponseID = responseID;
+                var response = db.SurveyResponses.Find(responseID);
+                Models.Survey survey = db.Surveys.Find(response.SurveyID);
+                return View(survey);
+            }
+            return RedirectToAction("SurveyList");
+        }
+
+        [HttpPost]
+        public void SurveyResponse(List<ResponseAnswer> models)
+        {
+            db.ResponseAnswers.AddRange(models);
+            db.SaveChanges();
         }
 
         protected override void Dispose(bool disposing)
