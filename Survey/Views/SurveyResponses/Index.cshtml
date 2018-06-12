@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Survey.Models.SurveyResponse>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Response Date
+        </th>
+        <th>
+            Fill From Site
+        </th>
+        <th>
+            Survey Title
+        </th>
+        <th>
+            Email ID
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResponseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FillFromSiteUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Survey.SurveyTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Visitor.EmailID)
+            </td>
+            <td>
+                @Html.ActionLink("View Details", "Details", new { id = item.SurveyResponseID })
+            </td>
+        </tr>
+    }
+
+</table>

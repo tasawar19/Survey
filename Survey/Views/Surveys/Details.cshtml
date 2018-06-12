@@ -43,11 +43,11 @@
                             @item.QuestionText
                         </dd>
                         @if (item.QuestionTypeID == 1)
-                            {
-                                    <dd>
-                                        <textarea rows="4" cols="40"></textarea>
-                                    </dd>
-                            }
+                        {
+                            <dd>
+                                <textarea rows="4" cols="40"></textarea>
+                            </dd>
+                        }
 
                         @foreach (var option in item.QuestionOptions)
                         {
@@ -81,9 +81,19 @@
     }
 </div>
 <p>
-    <button id="embed">Embed</button>
-    <button id="pdf">Generate PDF</button>
-    <button id="word">Generate Word</button>
+    <div class="form-group">
+        <button id="embed">Embed</button>
+        <button id="pdf">Generate PDF</button>
+        <button id="word">Generate Word</button>
+    </div>
+    <div class="form-group" id="embedCode" style="display:none">
+        <div class="col-md-5">
+            <input type="text" id="embedCopy" class="form-control text-box single-line" style="min-width:100%; " value="@string.Format("{0}://{1}/Visitors/Create?surveyID={2}", Request.Url.Scheme, Request.Url.Authority,Model.SurveyID)" />
+        </div>
+        <div class="col-md-2">
+            <button id="copy">copy</button>
+        </div>
+    </div>
     <br /><br />
     @Html.ActionLink("Back to List", "Index")
 </p>
@@ -96,6 +106,18 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#embed').click(function () {
+                $('#embedCode').toggle();
+            });
+
+            $('#copy').click(function () {
+                /* Select the text field */
+                $('#embedCopy').select();
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+            });
+
             $('#pdf').click(function () {
                 var pdf = new jsPDF('p', 'pt', 'letter');
                 var canvas = pdf.canvas;

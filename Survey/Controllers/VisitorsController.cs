@@ -36,6 +36,8 @@ namespace Survey.Controllers
         // GET: Visitors/Create
         public ActionResult Create(int surveyID)
         {
+            string fillFromSiteUrl = Request.UrlReferrer?.AbsoluteUri;
+            Session["FillFromSiteUrl"] = fillFromSiteUrl;
             ViewBag.SurveyID = surveyID;
             return View();
         }
@@ -50,22 +52,26 @@ namespace Survey.Controllers
             ViewBag.SurveyID = surveyID;
             if (ModelState.IsValid)
             {
-                db.Visitors.Add(visitor);
-                //db.SaveChanges();
-                var survey = db.Surveys.Find(surveyID);
-                survey.NoOfView = (survey.NoOfView ?? 0) + 1;
-                db.Entry(survey).State = EntityState.Modified;
-                SurveyResponse surveyResponse = new SurveyResponse()
+                var alreadyFilled = db.SurveyResponses.Where(t => t.SurveyID == surveyID && t.Visitor.EmailID.ToLower().Trim().Contains(visitor.EmailID.ToLower().Trim())).Any();
+                if (!alreadyFilled)
                 {
-                    FillFromSiteUrl = "",
-                    ResponseDate = DateTime.Now,
-                    SurveyID = surveyID,
-                    VisitorID = visitor.VisitorID
-                };
-                db.SurveyResponses.Add(surveyResponse);
-                db.SaveChanges();
+                    db.Visitors.Add(visitor);
+                    //db.SaveChanges();
+                    var survey = db.Surveys.Find(surveyID);
+                    survey.NoOfView = (survey.NoOfView ?? 0) + 1;
+                    db.Entry(survey).State = EntityState.Modified;
+                    SurveyResponse surveyResponse = new SurveyResponse()
+                    {
+                        FillFromSiteUrl = Convert.ToString(Session["FillFromSiteUrl"]),
+                        ResponseDate = DateTime.Now,
+                        SurveyID = surveyID,
+                        VisitorID = visitor.VisitorID
+                    };
+                    db.SurveyResponses.Add(surveyResponse);
+                    db.SaveChanges();
 
-                return RedirectToAction("SurveyResponse", "Surveys", new { responseID = surveyResponse.SurveyResponseID });
+                    return RedirectToAction("SurveyResponse", "Surveys", new { responseID = surveyResponse.SurveyResponseID });
+                }
             }
             return View(visitor);
         }

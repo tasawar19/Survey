@@ -1,0 +1,93 @@
+﻿@model Survey.Models.SurveyResponse
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div class="form-horizontal">
+    <h4>SurveyResponse</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ResponseDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResponseDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FillFromSiteUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FillFromSiteUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Survey.SurveyTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Survey.SurveyTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Visitor.EmailID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Visitor.EmailID)
+        </dd>
+
+    </dl>
+    <div class="form-group">
+        @Html.Label("Questions", htmlAttributes: new { @class = "control-label col-md-2" })
+        <br />
+        <hr>
+        @foreach (var item in Model.ResponseAnswers.OrderBy(t => t.Question.QuestionIndex))
+        {
+            <div class="col-md-10">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @(item.Question.QuestionIndex):
+                    </dt>
+                    <dd>
+                        @item.Question.QuestionText
+                    </dd>
+                    <dt>
+                        Answer:
+                    </dt>
+                    @if (item.Question.QuestionTypeID == 1)
+                    {
+                        <dd>
+                            @item.FreeTextAnswer
+                        </dd>
+                    }
+                    else
+                    {
+                        <dd>
+                            @(item.QuestionOption?.QuestionOptionText)
+                        </dd>
+                        if (item.QuestionOption.IsSurveyLogicText)
+                        {
+                            <dt>Survey Logic:</dt>
+                            <dd>
+                                @item.QuestionOption.SurveyLogicText
+                            </dd>
+                            <dt>Logic Answer:</dt>
+                            <dd>
+                                @item.FreeTextAnswer
+                            </dd>
+                        }
+                    }
+                </dl>
+            </div>
+        }
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", "SurveyResponses", new { surveyID = Model.SurveyID }, null)
+</p>
