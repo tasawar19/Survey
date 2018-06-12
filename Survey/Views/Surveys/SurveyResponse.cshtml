@@ -165,14 +165,22 @@
                     };
                     arrayList.push(model);
                 });
+
                 $.ajax({
                     type: "POST",
                     url: '/Surveys/SurveyResponse',
-                    data: arrayList,
-                    success: function (e) {
+                    data: JSON.stringify(arrayList),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (e) {          
                         window.location = '/Surveys/SurveyList';
+                    },
+                    error: function (e) {          
+                        if(e.statusText=="OK")
+                            window.location = '/Surveys/SurveyList';
+                        else
+                            alert(e.statusText);
                     }
-                    //dataType: dataType
                 });
             });
         });

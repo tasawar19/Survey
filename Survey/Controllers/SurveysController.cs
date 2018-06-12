@@ -126,8 +126,20 @@ namespace Survey.Controllers
         [HttpPost]
         public void SurveyResponse(List<ResponseAnswer> models)
         {
-            db.ResponseAnswers.AddRange(models);
-            db.SaveChanges();
+            if (models != null && models.Count > 0)
+            {
+                var surveyResponseID = models[0].SurveyResponseID;
+                // Update survey no of responses
+                var surveyResponse = db.SurveyResponses.Where(t => t.SurveyResponseID == surveyResponseID).FirstOrDefault();
+
+                var survey = db.Surveys.Find(surveyResponse.SurveyID);
+                survey.NoOfResponses = (survey.NoOfResponses ?? 0) + 1;
+                db.Entry(survey).State = EntityState.Modified;
+
+                // add survey answers
+                db.ResponseAnswers.AddRange(models);
+                db.SaveChanges();
+            }
         }
 
         protected override void Dispose(bool disposing)
