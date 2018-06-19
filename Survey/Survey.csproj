@@ -160,6 +160,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AnswerViewModel.cs" />
     <Compile Include="Models\Question.cs">
       <DependentUpon>SurveyEntities.tt</DependentUpon>
     </Compile>
@@ -288,6 +289,7 @@
     <Content Include="Views\SurveyResponses\Details.cshtml" />
     <Content Include="Views\SurveyResponses\Edit.cshtml" />
     <Content Include="Views\SurveyResponses\Index.cshtml" />
+    <Content Include="Views\Surveys\SurveyAnswer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -142,6 +142,35 @@ namespace Survey.Controllers
             }
         }
 
+        public ActionResult SurveyAnswer(int id)
+        {
+            var survey = db.Surveys.Find(id);
+
+            AnswerViewModel model = new AnswerViewModel();
+            model.SurveyID = survey.SurveyID;
+            model.SurveyName = survey.SurveyTitle;
+            model.Questions = new List<Questions>();
+
+            foreach (var item in survey.Questions)
+            {
+                Questions q = new Questions();
+                q.QuestionIndex = item.QuestionIndex;
+                q.QuestionText = item.QuestionText;
+                q.QuestionOptions = new List<QuestionOptions>();
+                foreach(var itm in item.QuestionOptions)
+                {
+                    QuestionOptions qo = new QuestionOptions();
+                    qo.QuestionOptionID = itm.QuestionOptionID;
+                    qo.OptionText = itm.QuestionOptionText;
+                    qo.AnswerCount = db.ResponseAnswers.Where(t => t.QuestionOptionID == qo.QuestionOptionID).Count();
+                    q.QuestionOptions.Add(qo);
+                }
+                model.Questions.Add(q);
+            }
+
+            return View(model);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
