@@ -1,73 +1,257 @@
 ﻿@model IEnumerable<Survey.Models.Survey>
-
 @{
-    ViewBag.Title = "Index";
+    Layout = null;
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create", new { id = 0 })
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.SurveyTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SurveyUrl)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TimeLimit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NoOfView)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NoOfResponses)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
-    </tr>
+<!DOCTYPE html>
+<html lang="en">
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SurveyTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SurveyUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeLimit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoOfView)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoOfResponses)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Create", new { id = item.SurveyID }) |
-                @Html.ActionLink("View", "Details", new { id = item.SurveyID }) |
-                @Html.ActionLink("Responses", "Index", "SurveyResponses", new { surveyID = item.SurveyID }, null) |
-                @Html.ActionLink("Results", "SurveyAnswer", new { id = item.SurveyID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.SurveyID })
-            </td>
-        </tr>
-    }
+<head>
 
-</table>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Surveys</title>
+
+
+    <link href="/Content/temp/asset/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <link href="/Content/temp/css/font-awesome.min.css" rel="stylesheet">
+
+
+    <!-- Animate CSS -->
+    <link href="/Content/css/animate.css" rel="stylesheet">
+
+    <!-- Owl-Carousel -->
+    <link rel="stylesheet" href="/Content/temp/css/owl.carousel.css">
+    <link rel="stylesheet" href="/Content/temp/css/owl.theme.css">
+    <link rel="stylesheet" href="/Content/temp/css/owl.transitions.css">
+
+    <!-- Custom CSS -->
+    <link href="/Content/temp/css/style.css" rel="stylesheet">
+    <link href="/Content/temp/css/responsive.css" rel="stylesheet">
+
+    <!-- Colors CSS -->
+    <link rel="stylesheet" type="text/css" href="/Content/temp/css/color/green.css">
+
+
+
+    <!-- Colors CSS -->
+    <link rel="stylesheet" type="text/css" href="/Content/temp/css/color/green.css" title="green">
+    <link rel="stylesheet" type="text/css" href="/Content/temp/css/color/light-red.css" title="light-red">
+    <link rel="stylesheet" type="text/css" href="/Content/temp/css/color/blue.css" title="blue">
+    <link rel="stylesheet" type="text/css" href="/Content/temp/css/color/light-blue.css" title="light-blue">
+    <link rel="stylesheet" type="text/css" href="/Content/temp/css/color/yellow.css" title="yellow">
+    <link rel="stylesheet" type="text/css" href="/Content/temp/css/color/light-green.css" title="light-green">
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+
+
+    <!-- Modernizer js -->
+    <script src="/Content/temp/js/modernizr.custom.js"></script>
+
+
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        li.my-class {
+            color: purple
+        }
+
+            li.my-class:active {
+                color: purple
+            }
+
+            li.my-class:link {
+                color: purple;
+            }
+
+            li.my-class:visited {
+                color: purple;
+            }
+    </style>
+</head>
+
+<body class="index">
+
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Survey Maker</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+
+                    <li>
+                        @Html.ActionLink("Create New", "Create", new { id = 0 }, new { @style = "color:#870682;" })
+                    </li>
+                    <li>
+                        @Html.ActionLink("Update Profile", "Update", new { @style = "color:#870682;" })
+                    </li>
+                    <li>
+                        @Html.ActionLink("LogOut", "Logout", "UserAccount", new { @style = "color:#870682;" })
+                    </li>
+
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+
+    <!-- End About Us Section -->
+    <!-- Start About Us Section 2 -->
+    <!-- Start About Us Section 2 -->
+    <!-- Start Feature Section -->
+    <section id="service" class="services-section">
+        <div class="container">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SurveyTitle)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EndDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SurveyUrl)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TimeLimit)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NoOfView)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NoOfResponses)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.User.UserEmailID)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SurveyTitle)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SurveyUrl)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TimeLimit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NoOfView)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NoOfResponses)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+
+                        <td>
+                            @Html.ActionLink("Edit", "Create", new { id = item.SurveyID }) |
+                            @Html.ActionLink("View", "Details", new { id = item.SurveyID }) |
+                            @Html.ActionLink("Responses", "Index", "SurveysResponses", new { surveyID = item.SurveyID }, null) |
+                            @Html.ActionLink("Results", "SurveyAnswer", new { id = item.SurveyID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.SurveyID })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+
+        </div><!-- /.container -->
+    </section>
+
+    <!-- Clients Aside -->
+
+
+
+
+    <footer class="style-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <span class="copyright">Copyright &copy; <a href="http://guardiantheme.com">SurveyMaker</a> 2018</span>
+                </div>
+
+
+            </div>
+        </div>
+    </footer>
+
+
+
+    <div id="loader">
+        <div class="spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
+    </div>
+
+
+
+    <!-- jQuery Version 2.1.1 -->
+    <script src="/Content/temp/js/jquery-2.1.1.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/Content/temp/asset/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="/Content/temp/js/jquery.easing.1.3.js"></script>
+    <script src="/Content/temp/js/classie.js"></script>
+    <script src="/Content/temp/js/count-to.js"></script>
+    <script src="/Content/temp/js/jquery.appear.js"></script>
+    <script src="/Content/temp/js/cbpAnimatedHeader.js"></script>
+    <script src="/Content/temp/js/owl.carousel.min.js"></script>
+    <script src="/Content/temp/js/jquery.fitvids.js"></script>
+    <script src="/Content/temp/js/styleswitcher.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="/Content/temp/js/jqBootstrapValidation.js"></script>
+    <script src="/Content/temp/js/contact_me.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/Content/temp/js/script.js"></script>
+
+</body>
+
+</html>
 

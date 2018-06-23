@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="SurveyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmailID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdminName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ResetPassword" Type="nvarchar" MaxLength="100" />
+          <Property Name="ActivationCode" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="Question">
           <Key>
             <PropertyRef Name="QuestionID" />
@@ -67,16 +78,6 @@
           <Property Name="ResponseDate" Type="datetime" />
           <Property Name="FillFromSiteUrl" Type="nvarchar" MaxLength="500" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
@@ -88,6 +89,8 @@
           <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Designation" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ActivationCode" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsEmailVarify" Type="bit" />
+          <Property Name="ResetPassword" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Visitor">
           <Key>
@@ -209,13 +212,13 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="SurveyModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionOption" EntityType="Self.QuestionOption" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionType" EntityType="Self.QuestionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResponseAnswer" EntityType="Self.ResponseAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Survey" EntityType="Self.Survey" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SurveyResponse" EntityType="Self.SurveyResponse" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visitor" EntityType="Self.Visitor" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Question_QuestionType" Association="Self.FK_Question_QuestionType">
@@ -359,6 +362,8 @@
           <Property Name="Designation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ActivationCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Surveys" Relationship="Self.FK_Survey_User" FromRole="User" ToRole="Survey" />
+          <Property Name="IsEmailVarify" Type="Boolean" />
+          <Property Name="ResetPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Visitor">
           <Key>
@@ -526,7 +531,19 @@
             <End Role="Visitor" EntitySet="Visitors" />
             <End Role="SurveyResponse" EntitySet="SurveyResponses" />
           </AssociationSet>
+          <EntitySet Name="Admins" EntityType="SurveyModel.Admin" />
         </EntityContainer>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmailID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AdminName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ResetPassword" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ActivationCode" Type="Guid" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -601,20 +618,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="SurveyModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="SurveyModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ResetPassword" ColumnName="ResetPassword" />
+                <ScalarProperty Name="IsEmailVarify" ColumnName="IsEmailVarify" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserEmailID" ColumnName="UserEmailID" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
@@ -634,6 +642,18 @@
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="Age" ColumnName="Age" />
                 <ScalarProperty Name="Designation" ColumnName="Designation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="SurveyModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+                <ScalarProperty Name="ResetPassword" ColumnName="ResetPassword" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="AdminName" ColumnName="AdminName" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="AdminID" ColumnName="AdminID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

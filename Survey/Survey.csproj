@@ -150,17 +150,25 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QuestionsController.cs" />
     <Compile Include="Controllers\SurveyResponsesController.cs" />
     <Compile Include="Controllers\SurveysController.cs" />
+    <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VisitorsController.cs" />
+    <Compile Include="crypt.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Admin.cs">
+      <DependentUpon>SurveyEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AnswerViewModel.cs" />
+    <Compile Include="Models\Extend\Admin.cs" />
+    <Compile Include="Models\Extend\User.cs" />
     <Compile Include="Models\Question.cs">
       <DependentUpon>SurveyEntities.tt</DependentUpon>
     </Compile>
@@ -170,6 +178,7 @@
     <Compile Include="Models\QuestionType.cs">
       <DependentUpon>SurveyEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\ResponseAnswer.cs">
       <DependentUpon>SurveyEntities.tt</DependentUpon>
     </Compile>
@@ -197,9 +206,11 @@
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>SurveyEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UpdateProfileViewModel.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>SurveyEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\Visitor.cs">
       <DependentUpon>SurveyEntities.tt</DependentUpon>
     </Compile>
@@ -208,6 +219,78 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\SignupTemp\css\font-awesome.css" />
+    <Content Include="Content\SignupTemp\css\style.css" />
+    <Content Include="Content\SignupTemp\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\SignupTemp\images\7.jpg" />
+    <Content Include="Content\SignupTemp\index.html" />
+    <Content Include="Content\SignupTemp\w3layouts-License.txt" />
+    <Content Include="Content\temp\asset\css\bootstrap-theme.css" />
+    <Content Include="Content\temp\asset\css\bootstrap-theme.min.css" />
+    <Content Include="Content\temp\asset\css\bootstrap.css" />
+    <Content Include="Content\temp\asset\css\bootstrap.min.css" />
+    <Content Include="Content\temp\asset\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\temp\asset\js\bootstrap.js" />
+    <Content Include="Content\temp\asset\js\bootstrap.min.js" />
+    <Content Include="Content\temp\asset\js\npm.js" />
+    <Content Include="Content\temp\css\animate.css" />
+    <Content Include="Content\temp\css\color\blue.css" />
+    <Content Include="Content\temp\css\color\green.css" />
+    <Content Include="Content\temp\css\color\light-blue.css" />
+    <Content Include="Content\temp\css\color\light-green.css" />
+    <Content Include="Content\temp\css\color\light-red.css" />
+    <Content Include="Content\temp\css\color\yellow.css" />
+    <Content Include="Content\temp\css\font-awesome.css" />
+    <Content Include="Content\temp\css\font-awesome.min.css" />
+    <Content Include="Content\temp\css\owl.carousel.css" />
+    <Content Include="Content\temp\css\owl.theme.css" />
+    <Content Include="Content\temp\css\owl.transitions.css" />
+    <Content Include="Content\temp\css\responsive.css" />
+    <Content Include="Content\temp\css\style.css" />
+    <Content Include="Content\temp\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\temp\images\encuesta.png" />
+    <Content Include="Content\temp\images\es.png" />
+    <Content Include="Content\temp\images\es1.png" />
+    <Content Include="Content\temp\images\esm.png" />
+    <Content Include="Content\temp\images\galaxy.jpg" />
+    <Content Include="Content\temp\images\h-back.jpg" />
+    <Content Include="Content\temp\images\h-bg.png" />
+    <Content Include="Content\temp\images\hs.jpg" />
+    <Content Include="Content\temp\images\hsm.jpg" />
+    <Content Include="Content\temp\images\ms.jpg" />
+    <Content Include="Content\temp\images\msm.jpg" />
+    <Content Include="Content\temp\images\mv.jpg" />
+    <Content Include="Content\temp\images\n.jpg" />
+    <Content Include="Content\temp\images\parallax\bg-01.jpg" />
+    <Content Include="Content\temp\images\parallax\bg-02.jpg" />
+    <Content Include="Content\temp\images\parallax\call-to.jpg" />
+    <Content Include="Content\temp\images\parallax\contact-bg.jpg" />
+    <Content Include="Content\temp\images\Post-Event-Survey-730x478.jpg" />
+    <Content Include="Content\temp\images\ss.jpg" />
+    <Content Include="Content\temp\images\ss1.jpg" />
+    <Content Include="Content\temp\images\ssm.jpg" />
+    <Content Include="Content\temp\images\survey-background.jpg" />
+    <Content Include="Content\temp\images\survey.jpg" />
+    <Content Include="Content\temp\images\surveyc.jpg" />
+    <Content Include="Content\temp\images\surveyp%29.jpg" />
+    <Content Include="Content\temp\images\testimonial\face_1.png" />
+    <Content Include="Content\temp\images\testimonial\face_2.png" />
+    <Content Include="Content\temp\images\testimonial\face_3.png" />
+    <Content Include="Content\temp\images\testimonial\face_4.png" />
+    <Content Include="Content\temp\images\v.jpg" />
+    <Content Include="Content\temp\js\cbpAnimatedHeader.js" />
+    <Content Include="Content\temp\js\classie.js" />
+    <Content Include="Content\temp\js\contact_me.js" />
+    <Content Include="Content\temp\js\count-to.js" />
+    <Content Include="Content\temp\js\jqBootstrapValidation.js" />
+    <Content Include="Content\temp\js\jquery-2.1.1.min.js" />
+    <Content Include="Content\temp\js\jquery.appear.js" />
+    <Content Include="Content\temp\js\jquery.easing.1.3.js" />
+    <Content Include="Content\temp\js\jquery.fitvids.js" />
+    <Content Include="Content\temp\js\modernizr.custom.js" />
+    <Content Include="Content\temp\js\owl.carousel.min.js" />
+    <Content Include="Content\temp\js\script.js" />
+    <Content Include="Content\temp\js\styleswitcher.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -234,6 +317,20 @@
     <Content Include="Models\SurveyEntities.edmx.diagram">
       <DependentUpon>SurveyEntities.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\SignupTemp\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\SignupTemp\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\SignupTemp\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\SignupTemp\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\SignupTemp\fonts\FontAwesome.otf" />
+    <Content Include="Content\temp\asset\css\bootstrap-theme.css.map" />
+    <Content Include="Content\temp\asset\css\bootstrap.css.map" />
+    <Content Include="Content\temp\asset\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\temp\asset\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\temp\asset\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\temp\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\temp\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\temp\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\temp\fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -290,6 +387,18 @@
     <Content Include="Views\SurveyResponses\Edit.cshtml" />
     <Content Include="Views\SurveyResponses\Index.cshtml" />
     <Content Include="Views\Surveys\SurveyAnswer.cshtml" />
+    <Content Include="Views\UserAccount\Registration.cshtml" />
+    <Content Include="Views\UserAccount\Login.cshtml" />
+    <Content Include="Views\Admin\Registration.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\Forgetpassword.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Login.cshtml" />
+    <Content Include="Views\Admin\ResetPassword.cshtml" />
+    <Content Include="Views\UserAccount\Forgetpassword.cshtml" />
+    <Content Include="Views\UserAccount\Index.cshtml" />
+    <Content Include="Views\UserAccount\ResetPassword.cshtml" />
+    <Content Include="Views\UserAccount\VarifyAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

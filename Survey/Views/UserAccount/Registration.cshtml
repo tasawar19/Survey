@@ -1,0 +1,115 @@
+﻿@model Survey.Models.User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Blend Login Form Flat Responsive Widget Template :: w3layouts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Blend  Login Form template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login sign up Responsive web template, SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- Custom Theme files -->
+    <link href="/Content/SignupTemp/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/Content/SignupTemp/css/font-awesome.css" rel="stylesheet"> <!-- Font-Awesome-Icons-CSS -->
+    <!-- //Custom Theme files -->
+    <!-- web font -->
+    <link href="//fonts.googleapis.com/css?family=Vollkorn+SC:400,600,700,900&amp;subset=cyrillic,cyrillic-ext,latin-ext,vietnamese" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+    <!-- //web font --> 
+</head>
+<body>
+    <div class="main">
+        <h1>Sign up</h1>
+        <div class="main-w3lsrow">
+            <div class="login-form login-form-left">
+                <div class="agile-row">
+
+                    <div class="login-agileits-top">
+                        @if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
+            {
+                if (ViewBag.Message != null)
+                {
+                                <div class="alert alert-success">
+                                    <strong>Success</strong>@ViewBag.Message
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="form-horizontal">
+                                   
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                    <p>Email</p>
+                                    <div>
+                                        @Html.TextBoxFor(model => model.UserEmailID, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserEmailID, "", new { @class = "text-danger" })
+                                    </div>
+
+
+
+                                    <p>Username</p>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                    </div>
+
+
+                                    <p>password</p>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                    <p> conform password</p>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.ConformPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ConformPassword, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <p>Designation</p>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                                    </div>
+
+
+
+
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="Create" class="btn btn-default" />
+                                        </div>
+                                    </div>
+                                </div>
+                                if (ViewBag.Message != null)
+                                {
+                                    <div class="alert alert-danger">
+                                        <strong>Success</strong>@ViewBag.Message
+                                    </div>
+                                }
+
+                            }
+                        }
+
+                        <div>
+                            @Html.ActionLink("Login", "Login")
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    
+</body>
+</html>

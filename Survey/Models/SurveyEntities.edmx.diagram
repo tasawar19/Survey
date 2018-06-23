@@ -23,6 +23,7 @@
         <AssociationConnector Association="SurveyModel.FK_Survey_User" ManuallyRouted="false" />
         <AssociationConnector Association="SurveyModel.FK_SurveyResponse_Survey" ManuallyRouted="false" />
         <AssociationConnector Association="SurveyModel.FK_SurveyResponse_Visitor" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SurveyModel.Admin" Width="1.5" PointX="8.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
