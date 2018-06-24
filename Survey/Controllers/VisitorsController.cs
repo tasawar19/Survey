@@ -13,6 +13,7 @@ namespace Survey.Controllers
     public class VisitorsController : BaseController
     {
         // GET: Visitors
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Visitors.ToList());

@@ -39,19 +39,19 @@
             <td>
                 @if (item.QuestionOptions.Count > 0)
                 {
-                <div class="progress">
-                    @foreach (var itm in item.QuestionOptions)
-                    {
-                        <div class="progress-bar progress-bar-success" role="progressbar" style="background-color:#@colors[i]; width:@(itm.AnswerCount * 100.000 / total)%;">
-                            @itm.OptionText (@Math.Round(itm.AnswerCount * 100.000 / total)%)
-                        </div>
-                        i++;
-                    }
-                </div>
+                    <div class="progress">
+                        @foreach (var itm in item.QuestionOptions)
+                        {
+                            <div class="progress-bar progress-bar-success" role="progressbar" style="background-color:#@colors[i]; width:@(itm.AnswerCount * 100.000 / total)%;">
+                                @itm.OptionText (@Math.Round(itm.AnswerCount * 100.000 / total)%)
+                            </div>
+                            i++;
+                        }
+                    </div>
                 }
                 else
                 {
-                    <div  class="progress">
+                    <div class="progress">
                         <div class="progress-bar  progress-bar-success" role="progressbar" style="width:100%;">
                             Free Text
                         </div>

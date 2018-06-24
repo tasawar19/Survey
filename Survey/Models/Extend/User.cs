@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace Survey.Models.Extend
+namespace Survey.Models
 {
     [MetadataType(typeof(UserMetadata))]
     public partial class User

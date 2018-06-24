@@ -203,9 +203,6 @@
     <Compile Include="Models\SurveyResponse.cs">
       <DependentUpon>SurveyEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>SurveyEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\UpdateProfileViewModel.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>SurveyEntities.tt</DependentUpon>

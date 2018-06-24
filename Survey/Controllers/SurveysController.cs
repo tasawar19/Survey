@@ -8,11 +8,13 @@ using System.Web.Mvc;
 
 namespace Survey.Controllers
 {
+    [Authorize]
     public class SurveysController : BaseController
     {
         // GET: Surveys
         public ActionResult Index()
         {
+            int userID = Convert.ToInt32(Session["UserID"]);
             var surveys = db.Surveys.Where(t => t.UserID == userID);
             return View(surveys.ToList());
         }
@@ -45,6 +47,7 @@ namespace Survey.Controllers
             {
                 survey = new Models.Survey();
             }
+            int userID = Convert.ToInt32(Session["UserID"]);
             survey.UserID = userID;
             survey.EndDate = DateTime.Now;
             return View(survey);
@@ -104,12 +107,13 @@ namespace Survey.Controllers
             return RedirectToAction("Index");
         }
 
+        [AllowAnonymous]
         public ActionResult SurveyList(string search = "")
         {
             var surveys = db.Surveys.Where(t => t.SurveyTitle.Contains(search));
             return View(surveys.ToList());
         }
-
+        [AllowAnonymous]
         public ActionResult SurveyResponse(int responseID)
         {
             var alreadyFilled = db.ResponseAnswers.Where(t => t.SurveyResponseID == responseID).Any();
@@ -163,6 +167,8 @@ namespace Survey.Controllers
                     qo.QuestionOptionID = itm.QuestionOptionID;
                     qo.OptionText = itm.QuestionOptionText;
                     qo.AnswerCount = db.ResponseAnswers.Where(t => t.QuestionOptionID == qo.QuestionOptionID).Count();
+                    qo.MAnsCount = db.ResponseAnswers.Where(t => t.QuestionOptionID == qo.QuestionOptionID && t.SurveyResponse.Visitor.Gender.Equals("Male")).Count();
+                    qo.FAnsCount = db.ResponseAnswers.Where(t => t.QuestionOptionID == qo.QuestionOptionID && t.SurveyResponse.Visitor.Gender.Equals("Female")).Count();
                     q.QuestionOptions.Add(qo);
                 }
                 model.Questions.Add(q);

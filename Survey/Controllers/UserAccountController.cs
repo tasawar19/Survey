@@ -38,7 +38,7 @@ namespace Survey.Controllers
                 else
                 {
                     //generate activation code
-                    user.ActivationCode = Guid.NewGuid();
+                    user.ActivationCode = Guid.NewGuid().ToString();
                     //password hasing
                     user.Password = crypt.Hash(user.Password);
                     user.ConfirmPassword = crypt.Hash(user.ConfirmPassword);
@@ -72,7 +72,7 @@ namespace Survey.Controllers
             using (SurveyEntities db = new SurveyEntities())
             {
                 db.Configuration.ValidateOnSaveEnabled = false;//avoid conform password not match save changes
-                var v = db.Users.Where(a => a.ActivationCode == new Guid(id)).FirstOrDefault();
+                var v = db.Users.Where(a => a.ActivationCode == new Guid(id).ToString()).FirstOrDefault();
                 if (v != null)
                 {
                     v.IsEmailVarify = true;
@@ -106,7 +106,7 @@ namespace Survey.Controllers
                 var v = db.Users.Where(a => a.UserEmailID == login.UserEmailID).FirstOrDefault();
                 if (v != null)
                 {
-                    if (!v.IsEmailVarify)
+                    if (!Convert.ToBoolean(v.IsEmailVarify))
                     {
                         ViewBag.Message = "please verify your email first";
                         return View();
@@ -114,13 +114,15 @@ namespace Survey.Controllers
                     if (string.Compare(crypt.Hash(login.Password), v.Password) == 0)//compare password hash with hash means  //user password will convet to the hash and 
                                                                                     //compare with the db pass i.e v.password
                     {
-                        int timeout = login.RememberMe ? 525600 : 20;//525600min =1 year
-                        var ticket = new FormsAuthenticationTicket(login.UserEmailID, login.RememberMe, timeout);
-                        string encrypt = FormsAuthentication.Encrypt(ticket);//check
-                        var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypt);
-                        cookie.Expires = DateTime.Now.AddMinutes(timeout);
-                        cookie.HttpOnly = true;
-                        Response.Cookies.Add(cookie);
+                        //int timeout = login.RememberMe ? 525600 : 20;//525600min =1 year
+                        //var ticket = new FormsAuthenticationTicket(login.UserEmailID, login.RememberMe, timeout);
+                        //string encrypt = FormsAuthentication.Encrypt(ticket);//check
+                        //var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypt);
+                        //cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                        //cookie.HttpOnly = true;
+                        //Response.Cookies.Add(cookie);
+                        Session["UserID"] = v.UserID;
+                        FormsAuthentication.SetAuthCookie(login.UserEmailID, login.RememberMe);
                         if (Url.IsLocalUrl(ReturnUrl))
                         {
                             return Redirect(ReturnUrl);
@@ -234,7 +236,7 @@ namespace Survey.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        //[HttpPost]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();//check?????????????????????????????????????????????????????????????????

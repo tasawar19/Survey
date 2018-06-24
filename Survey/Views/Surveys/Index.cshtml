@@ -112,7 +112,7 @@
                         @Html.ActionLink("Update Profile", "Update", new { @style = "color:#870682;" })
                     </li>
                     <li>
-                        @Html.ActionLink("LogOut", "Logout", "UserAccount", new { @style = "color:#870682;" })
+                        @Html.ActionLink("LogOut", "Logout", "UserAccount", null, new { @style = "color:#870682;" })
                     </li>
 
 
@@ -154,7 +154,7 @@
                         @Html.DisplayNameFor(model => model.Status)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.UserEmailID)
+                        @*@Html.DisplayNameFor(model => model.User.UserEmailID)*@
                     </th>
                     <th></th>
                 </tr>
@@ -187,7 +187,7 @@
                         <td>
                             @Html.ActionLink("Edit", "Create", new { id = item.SurveyID }) |
                             @Html.ActionLink("View", "Details", new { id = item.SurveyID }) |
-                            @Html.ActionLink("Responses", "Index", "SurveysResponses", new { surveyID = item.SurveyID }, null) |
+                            @Html.ActionLink("Responses", "Index", "SurveyResponses", new { surveyID = item.SurveyID }, null) |
                             @Html.ActionLink("Results", "SurveyAnswer", new { id = item.SurveyID }) |
                             @Html.ActionLink("Delete", "Delete", new { id = item.SurveyID })
                         </td>

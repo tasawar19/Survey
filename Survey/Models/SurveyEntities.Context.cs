@@ -31,7 +31,6 @@ namespace Survey.Models
         public virtual DbSet<ResponseAnswer> ResponseAnswers { get; set; }
         public virtual DbSet<Survey> Surveys { get; set; }
         public virtual DbSet<SurveyResponse> SurveyResponses { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Visitor> Visitors { get; set; }
         public virtual DbSet<Admin> Admins { get; set; }

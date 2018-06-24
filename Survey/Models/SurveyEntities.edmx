@@ -340,16 +340,6 @@
           <NavigationProperty Name="Survey" Relationship="Self.FK_SurveyResponse_Survey" FromRole="SurveyResponse" ToRole="Survey" />
           <NavigationProperty Name="Visitor" Relationship="Self.FK_SurveyResponse_Visitor" FromRole="SurveyResponse" ToRole="Visitor" />
         </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
@@ -492,7 +482,6 @@
           <EntitySet Name="ResponseAnswers" EntityType="Self.ResponseAnswer" />
           <EntitySet Name="Surveys" EntityType="Self.Survey" />
           <EntitySet Name="SurveyResponses" EntityType="Self.SurveyResponse" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="Visitors" EntityType="Self.Visitor" />
           <AssociationSet Name="FK_Question_QuestionType" Association="Self.FK_Question_QuestionType">
