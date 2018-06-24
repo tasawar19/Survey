@@ -396,6 +396,7 @@
     <Content Include="Views\UserAccount\Index.cshtml" />
     <Content Include="Views\UserAccount\ResetPassword.cshtml" />
     <Content Include="Views\UserAccount\VarifyAccount.cshtml" />
+    <Content Include="Views\Surveys\SurveyAnswerGender.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -15,7 +15,7 @@ namespace Survey.Controllers
         public ActionResult Index()
         {
             int userID = Convert.ToInt32(Session["UserID"]);
-            var surveys = db.Surveys.Where(t => t.UserID == userID);
+            var surveys = db.Surveys.Where(t => t.UserID == userID || t.UserID==null);
             return View(surveys.ToList());
         }
 
@@ -46,10 +46,10 @@ namespace Survey.Controllers
             if (survey == null)
             {
                 survey = new Models.Survey();
+                survey.EndDate = DateTime.Now;
             }
             int userID = Convert.ToInt32(Session["UserID"]);
             survey.UserID = userID;
-            survey.EndDate = DateTime.Now;
             return View(survey);
         }
 
@@ -162,6 +162,35 @@ namespace Survey.Controllers
                 q.QuestionText = item.QuestionText;
                 q.QuestionOptions = new List<QuestionOptions>();
                 foreach(var itm in item.QuestionOptions)
+                {
+                    QuestionOptions qo = new QuestionOptions();
+                    qo.QuestionOptionID = itm.QuestionOptionID;
+                    qo.OptionText = itm.QuestionOptionText;
+                    qo.AnswerCount = db.ResponseAnswers.Where(t => t.QuestionOptionID == qo.QuestionOptionID).Count();
+                    q.QuestionOptions.Add(qo);
+                }
+                model.Questions.Add(q);
+            }
+
+            return View(model);
+        }
+
+        public ActionResult SurveyAnswerGender(int id)
+        {
+            var survey = db.Surveys.Find(id);
+
+            AnswerViewModel model = new AnswerViewModel();
+            model.SurveyID = survey.SurveyID;
+            model.SurveyName = survey.SurveyTitle;
+            model.Questions = new List<Questions>();
+
+            foreach (var item in survey.Questions)
+            {
+                Questions q = new Questions();
+                q.QuestionIndex = item.QuestionIndex;
+                q.QuestionText = item.QuestionText;
+                q.QuestionOptions = new List<QuestionOptions>();
+                foreach (var itm in item.QuestionOptions)
                 {
                     QuestionOptions qo = new QuestionOptions();
                     qo.QuestionOptionID = itm.QuestionOptionID;

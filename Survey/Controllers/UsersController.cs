@@ -6,6 +6,7 @@ using Survey.Models;
 
 namespace Survey.Controllers
 {
+    [Authorize]
     public class UsersController : BaseController
     {
         // GET: Users

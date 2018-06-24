@@ -10,6 +10,7 @@ using Survey.Models;
 
 namespace Survey.Controllers
 {
+    [Authorize]
     public class QuestionsController : BaseController
     {
         // GET: Questions

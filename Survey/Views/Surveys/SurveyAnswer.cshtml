@@ -3,62 +3,70 @@
 @{
     ViewBag.Title = "SurveyAnswer";
 }
+<div id="surveyDiv" style="width:100%;">
+    <h2>Survey Answer</h2>
 
-<h2>SurveyAnswer</h2>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.SurveyName)
+            </dt>
 
-<div>
-    <h4>AnswerViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.SurveyName)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.SurveyName)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.SurveyName)
-        </dd>
-
-    </dl>
-</div>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("Questions")
-        </th>
-        <th></th>
-    </tr>
-    @{string[] colors = { "5cb85c", "f0ad4e", "d9534f", "000000", "555555", "aaaaaa" }; }
-    @foreach (var item in Model.Questions.OrderBy(t => t.QuestionIndex))
-    {
-        int i = 0;
-        var total = item.QuestionOptions.Sum(t => t.AnswerCount);
+        </dl>
+    </div>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionText)
-            </td>
-            <td>
-                @if (item.QuestionOptions.Count > 0)
-                {
-                    <div class="progress">
-                        @foreach (var itm in item.QuestionOptions)
-                        {
-                            <div class="progress-bar progress-bar-success" role="progressbar" style="background-color:#@colors[i]; width:@(itm.AnswerCount * 100.000 / total)%;">
-                                @itm.OptionText (@Math.Round(itm.AnswerCount * 100.000 / total)%)
-                            </div>
-                            i++;
-                        }
-                    </div>
-                }
-                else
-                {
-                    <div class="progress">
-                        <div class="progress-bar  progress-bar-success" role="progressbar" style="width:100%;">
-                            Free Text
-                        </div>
-                    </div>
-                }
-            </td>
+            <th>
+                @Html.DisplayName("Questions")
+            </th>
+            <th></th>
         </tr>
-    }
+        @{string[] colors = { "5cb85c", "f0ad4e", "d9534f", "000000", "555555", "aaaaaa" }; }
+        @foreach (var item in Model.Questions.OrderBy(t => t.QuestionIndex))
+        {
+            if (item.QuestionOptions.Count > 0)
+            {
+                int i = 0;
+                var total = item.QuestionOptions.Sum(t => t.AnswerCount);
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuestionText)
+                    </td>
+                    <td>
 
-</table>
+                        <div class="progress">
+                            @foreach (var itm in item.QuestionOptions)
+                            {
+                                <div class="progress-bar progress-bar-success" role="progressbar" style="background-color:#@colors[i]; width:@(itm.AnswerCount * 100.000 / total)%;">
+                                    @itm.OptionText (@Math.Round(itm.AnswerCount * 100.000 / total)%)
+                                </div>
+                                i++;
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<div class="form-group">
+    <button id="word">Generate Word</button>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/third_party/word.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#word').click(function () {
+                $(document).googoose({
+                    area: '#surveyDiv'
+                });
+            });
+        });
+    </script>
+}

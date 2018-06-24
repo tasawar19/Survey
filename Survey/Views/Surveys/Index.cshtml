@@ -189,6 +189,7 @@
                             @Html.ActionLink("View", "Details", new { id = item.SurveyID }) |
                             @Html.ActionLink("Responses", "Index", "SurveyResponses", new { surveyID = item.SurveyID }, null) |
                             @Html.ActionLink("Results", "SurveyAnswer", new { id = item.SurveyID }) |
+                            @Html.ActionLink("Gender Results", "SurveyAnswerGender", new { id = item.SurveyID }) |
                             @Html.ActionLink("Delete", "Delete", new { id = item.SurveyID })
                         </td>
                     </tr>

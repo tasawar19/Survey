@@ -91,6 +91,10 @@
         $(document).ready(function () {
             if ($("#QuestionTypeID").val() == 1)
                 $(".optionCount").hide();
+            else if ($("#QuestionTypeID").val() === "3") {
+                $(".optionCount").show();
+                $("#OptionCount").val("2").attr("disabled", true);
+            }
             else
                 $(".optionCount").show();
             $("#QuestionTypeID").change(function () {
