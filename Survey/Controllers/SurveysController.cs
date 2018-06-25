@@ -14,8 +14,8 @@ namespace Survey.Controllers
         // GET: Surveys
         public ActionResult Index()
         {
-            int userID = Convert.ToInt32(Session["UserID"]);
-            var surveys = db.Surveys.Where(t => t.UserID == userID || t.UserID==null);
+            int userID = db.Users.Where(t => t.UserEmailID.Equals(User.Identity.Name)).FirstOrDefault().UserID;
+            var surveys = db.Surveys.Where(t => t.UserID == userID || t.UserID == null);
             return View(surveys.ToList());
         }
 
@@ -47,8 +47,11 @@ namespace Survey.Controllers
             {
                 survey = new Models.Survey();
                 survey.EndDate = DateTime.Now;
+                ViewBag.isTemplate = true;
             }
-            int userID = Convert.ToInt32(Session["UserID"]);
+            else
+                ViewBag.isTemplate = survey.UserID.HasValue;
+            int userID = db.Users.Where(t => t.UserEmailID.Equals(User.Identity.Name)).FirstOrDefault().UserID;
             survey.UserID = userID;
             return View(survey);
         }
@@ -62,6 +65,44 @@ namespace Survey.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (Request.Form["Template"] != null)
+                {
+                    var model = new Models.Survey();
+                    model.EndDate = survey.EndDate;
+                    model.SurveyTitle = survey.SurveyTitle;
+                    model.TimeLimit = survey.TimeLimit;
+                    //int userID = db.Users.Where(t => t.UserEmailID.Equals(User.Identity.Name)).FirstOrDefault().UserID;
+                    model.UserID = survey.UserID;
+
+                    foreach (var item in db.Questions.Where(t => t.SurveyID == survey.SurveyID).ToList())
+                    {
+                        Question q = new Question();
+                        q.QuestionIndex = item.QuestionIndex;
+                        q.QuestionText = item.QuestionText;
+                        q.OptionCount = item.OptionCount;
+                        q.QuestionTypeID = item.QuestionTypeID;
+                        q.SurveyID = model.SurveyID;
+
+                        foreach(var itm in db.QuestionOptions.Where(o => o.QuestionID == item.QuestionID).ToList())
+                        {
+                            QuestionOption qo = new QuestionOption();
+                            qo.IsSurveyLogicText = itm.IsSurveyLogicText;
+                            qo.QuestionID = q.QuestionID;
+                            qo.QuestionOptionText = itm.QuestionOptionText;
+                            qo.SurveyLogicText = itm.SurveyLogicText;
+
+                            q.QuestionOptions.Add(qo);
+                        }
+
+                        model.Questions.Add(q);
+                    }
+
+                    db.Surveys.Add(model);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+
                 if (survey.SurveyID == 0)
                     db.Surveys.Add(survey);
                 else
@@ -161,7 +202,7 @@ namespace Survey.Controllers
                 q.QuestionIndex = item.QuestionIndex;
                 q.QuestionText = item.QuestionText;
                 q.QuestionOptions = new List<QuestionOptions>();
-                foreach(var itm in item.QuestionOptions)
+                foreach (var itm in item.QuestionOptions)
                 {
                     QuestionOptions qo = new QuestionOptions();
                     qo.QuestionOptionID = itm.QuestionOptionID;

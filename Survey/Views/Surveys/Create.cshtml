@@ -31,7 +31,7 @@
             <div class="col-md-10">
                 @*@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @required = "required", @type = "date" } })*@
                 <input class="form-control text-box single-line" data-val="true" data-val-date="The field EndDate must be a date." data-val-required="The EndDate field is required." id="EndDate" name="EndDate" required="required" type="date" value="@Model.EndDate.ToString("yyyy-MM-dd")">
-               @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -44,7 +44,14 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@(Model.SurveyID>0?"Update":"Create")" class="btn btn-default" />
+                @if (ViewBag.isTemplate)
+                {
+                    <input type="submit" value="@(Model.SurveyID > 0 ? "Update" : "Create")" name="Survey" class="btn btn-default" />
+                }
+                else
+                {
+                    <input type="submit" value="Create Copy" name="Template" class="btn btn-default" />
+                }
             </div>
         </div>
         @if (Model.SurveyID != 0)
@@ -88,17 +95,23 @@
                             }
                         </dl>
                     </div>
-                    <div class="col-md-2">
-                        @Html.ActionLink("Edit", "Create", "Questions", new { surveyID = Model.SurveyID, id = item.QuestionID }, new { htmlAttributes = new { @class = "form-control" } }) |
-                        @Html.ActionLink("Delete", "Delete", "Questions", new { id = item.QuestionID }, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
+                    if (ViewBag.isTemplate)
+                    {
+                        <div class="col-md-2">
+                            @Html.ActionLink("Edit", "Create", "Questions", new { surveyID = Model.SurveyID, id = item.QuestionID }, new { htmlAttributes = new { @class = "form-control" } }) |
+                            @Html.ActionLink("Delete", "Delete", "Questions", new { id = item.QuestionID }, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    }
                 }
             </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    @Html.ActionLink("Add Question", "Create", "Questions", new { surveyID = Model.SurveyID, id = 0 }, new { htmlAttributes = new { @class = "form-control" } })
+            if (ViewBag.isTemplate)
+            {
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @Html.ActionLink("Add Question", "Create", "Questions", new { surveyID = Model.SurveyID, id = 0 }, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
                 </div>
-            </div>
+            }
         }
     </div>
 }

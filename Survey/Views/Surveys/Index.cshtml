@@ -63,11 +63,11 @@
     <![endif]-->
     <style type="text/css">
         li.my-class {
-            color: purple
+            color: purple;
         }
 
             li.my-class:active {
-                color: purple
+                color: purple;
             }
 
             li.my-class:link {
@@ -183,15 +183,23 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Status)
                         </td>
-
-                        <td>
-                            @Html.ActionLink("Edit", "Create", new { id = item.SurveyID }) |
-                            @Html.ActionLink("View", "Details", new { id = item.SurveyID }) |
-                            @Html.ActionLink("Responses", "Index", "SurveyResponses", new { surveyID = item.SurveyID }, null) |
-                            @Html.ActionLink("Results", "SurveyAnswer", new { id = item.SurveyID }) |
-                            @Html.ActionLink("Gender Results", "SurveyAnswerGender", new { id = item.SurveyID }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.SurveyID })
-                        </td>
+                        @if (item?.UserID != null)
+                        {
+                            <td>
+                                @Html.ActionLink("Edit", "Create", new { id = item.SurveyID }) |
+                                @Html.ActionLink("View", "Details", new { id = item.SurveyID }) |
+                                @Html.ActionLink("Responses", "Index", "SurveyResponses", new { surveyID = item.SurveyID }, null) |
+                                @Html.ActionLink("Results", "SurveyAnswer", new { id = item.SurveyID }) |
+                                @Html.ActionLink("Gender Results", "SurveyAnswerGender", new { id = item.SurveyID }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.SurveyID })
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.ActionLink("Create Copy", "Create", new { id = item.SurveyID })
+                            </td>
+                        }
                     </tr>
                 }
 
@@ -255,4 +263,3 @@
 </body>
 
 </html>
-
