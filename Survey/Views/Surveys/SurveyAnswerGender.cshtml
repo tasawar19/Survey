@@ -52,11 +52,11 @@
                         {
                             <div class="progress-bar progress-bar-success" role="progressbar" style="width:@(itm.AnswerCount * 100.000 / total)%;">
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-success" role="progressbar" style="background-color:#456876; width:@(itm.MAnsCount * 100 / itm.AnswerCount)%;">
-                                        Male (@(itm.MAnsCount * 100 / itm.AnswerCount)%)
+                                    <div class="progress-bar progress-bar-success" role="progressbar" style="background-color:#456876; width:@(itm.AnswerCount==0?0:(itm.MAnsCount * 100 / itm.AnswerCount))%;">
+                                        Male (@(itm.AnswerCount==0?0:(itm.MAnsCount * 100 / itm.AnswerCount))%)
                                     </div>
-                                    <div class="progress-bar progress-bar-success" role="progressbar" style="background-color:#987456; width:@(100-(itm.MAnsCount * 100 / itm.AnswerCount))%;">
-                                        Female (@(100 - (itm.MAnsCount * 100 / itm.AnswerCount))%)
+                                    <div class="progress-bar progress-bar-success" role="progressbar" style="background-color:#987456; width:@(100-(itm.AnswerCount==0?0:(itm.MAnsCount * 100 / itm.AnswerCount)))%;">
+                                        Female (@(itm.AnswerCount == 0 ? 0 : (100 - (itm.MAnsCount * 100 / itm.AnswerCount)))%)
                                     </div>
                                 </div>
                             </div>
