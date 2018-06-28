@@ -169,6 +169,7 @@ namespace Survey.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public void SurveyResponse(List<ResponseAnswer> models)
         {
             if (models != null && models.Count > 0)
