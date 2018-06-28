@@ -15,7 +15,7 @@ namespace Survey.Controllers
         public ActionResult Index()
         {
             int userID = db.Users.Where(t => t.UserEmailID.Equals(User.Identity.Name)).FirstOrDefault().UserID;
-            var surveys = db.Surveys.Where(t => (t.UserID == userID || t.UserID == null) && (!t.Status.HasValue || t.Status.Value));
+            var surveys = db.Surveys.Where(t => (t.UserID == userID || t.UserID == null));
             return View(surveys.ToList());
         }
 
