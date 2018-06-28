@@ -15,7 +15,7 @@ namespace Survey.Controllers
         public ActionResult Index()
         {
             int userID = db.Users.Where(t => t.UserEmailID.Equals(User.Identity.Name)).FirstOrDefault().UserID;
-            var surveys = db.Surveys.Where(t => t.UserID == userID || t.UserID == null);
+            var surveys = db.Surveys.Where(t => (t.UserID == userID || t.UserID == null) && (!t.Status.HasValue || t.Status.Value));
             return View(surveys.ToList());
         }
 
@@ -144,14 +144,25 @@ namespace Survey.Controllers
                 db.Questions.Remove(item);
             }
             db.Surveys.Remove(survey);
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                db = new SurveyEntities();
+                var disableSurvey = db.Surveys.Find(survey.SurveyID);
+                disableSurvey.Status = false;
+                db.Entry(disableSurvey).State = EntityState.Modified;
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
         [AllowAnonymous]
         public ActionResult SurveyList(string search = "")
         {
-            var surveys = db.Surveys.Where(t => t.SurveyTitle.Contains(search));
+            var surveys = db.Surveys.Where(t => t.SurveyTitle.Contains(search) && (!t.Status.HasValue || t.Status.Value));
             return View(surveys.ToList());
         }
         [AllowAnonymous]
