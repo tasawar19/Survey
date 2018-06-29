@@ -105,7 +105,7 @@
             }
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="button" value="Submit" id="submit" />
+                    <input type="button" value="Submit" id="submit" style="display:none;" />
                 </div>
             </div>
         }
@@ -116,6 +116,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#submit').delay(@(Model.TimeLimit*60000)).show(0);   
             // radio button option
             $('.radioOption').change(function () {
                 var checked = $(this).is(':checked')

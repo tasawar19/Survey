@@ -83,7 +83,7 @@ namespace Survey.Controllers
                         q.QuestionTypeID = item.QuestionTypeID;
                         q.SurveyID = model.SurveyID;
 
-                        foreach(var itm in db.QuestionOptions.Where(o => o.QuestionID == item.QuestionID).ToList())
+                        foreach (var itm in db.QuestionOptions.Where(o => o.QuestionID == item.QuestionID).ToList())
                         {
                             QuestionOption qo = new QuestionOption();
                             qo.IsSurveyLogicText = itm.IsSurveyLogicText;
@@ -152,7 +152,10 @@ namespace Survey.Controllers
             {
                 db = new SurveyEntities();
                 var disableSurvey = db.Surveys.Find(survey.SurveyID);
-                disableSurvey.Status = false;
+                if (!disableSurvey.Status.Value)
+                    disableSurvey.Status = true;
+                else
+                    disableSurvey.Status = false;
                 db.Entry(disableSurvey).State = EntityState.Modified;
                 db.SaveChanges();
             }
@@ -162,7 +165,8 @@ namespace Survey.Controllers
         [AllowAnonymous]
         public ActionResult SurveyList(string search = "")
         {
-            var surveys = db.Surveys.Where(t => t.SurveyTitle.Contains(search) && (!t.Status.HasValue || t.Status.Value));
+            ViewBag.search = search;
+            var surveys = db.Surveys.Where(t => t.UserID.HasValue && DbFunctions.TruncateTime(t.EndDate) >= DbFunctions.TruncateTime(DateTime.Now) && t.SurveyTitle.Contains(search) && (!t.Status.HasValue || t.Status.Value));
             return View(surveys.ToList());
         }
         [AllowAnonymous]

@@ -65,7 +65,19 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @if (Model.NoOfResponses.HasValue && (!Model.Status.HasValue || Model.Status.Value))
+            {
+                <input type="submit" value="Disable" class="btn btn-default" /> 
+            }
+            else if (Model.NoOfResponses.HasValue && !Model.Status.Value)
+            {
+                <input type="submit" value="Enable" class="btn btn-default" /> 
+            }
+            else
+            {
+                <input type="submit" value="Delete" class="btn btn-default" /> 
+            }
+            @*<input type="submit" value="Delete" class="btn btn-default" />*@ |
             @Html.ActionLink("Back to List", "Index")
         </div>
     }

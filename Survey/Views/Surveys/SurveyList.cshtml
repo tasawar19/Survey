@@ -4,11 +4,21 @@
     ViewBag.Title = "SurveyList";
 }
 
-<h2>SurveyList</h2>
+<h2>Survey List</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
+    @using (Html.BeginForm())
+    {<div class="form-group">
+        <div class="col-md-3">
+            <input type="text" name="search" class="form-control" value="@ViewBag.search" required />
+        </div>
+         <div class="col-md-2">
+             <input type="submit" value="Search"  class="btn btn-default"/>
+        
+         </div>
+    </div>
+    }
+<br />
 <table class="table">
     <tr>
         <th>
@@ -23,21 +33,22 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SurveyTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeLimit)
-        </td>
-        <td>
-            @Html.ActionLink("Take Survey", "Create", "Visitors", new { surveyID = item.SurveyID }, new { htmlAttributes = new { @class = "form-control" } })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SurveyTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeLimit)
+            </td>
+            <td>
+                @Html.ActionLink("Take Survey", "Create", "Visitors", new { surveyID = item.SurveyID }, new { htmlAttributes = new { @class = "form-control" } })
+            </td>
+        </tr>
+    }
 
 </table>
